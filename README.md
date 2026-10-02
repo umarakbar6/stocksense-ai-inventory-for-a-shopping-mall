@@ -6,6 +6,13 @@ StockSense is a complete, role-aware inventory platform for a shopping mall. It 
 
 All 13 approved phases (0–12) are complete. The five formal acceptance scenarios pass against live PostgreSQL, backend APIs, n8n, and the Gemini free tier. Backend tests, production builds, workflow validation, security hardening, and 360px responsive checks are included.
 
+## Live deployment
+
+- **Vercel frontend:** [stocksense-ai-inventory-for-a-shopp.vercel.app](https://stocksense-ai-inventory-for-a-shopp.vercel.app)
+- **GitHub repository:** [umarakbar6/stocksense-ai-inventory-for-a-shopping-mall](https://github.com/umarakbar6/stocksense-ai-inventory-for-a-shopping-mall)
+
+The Vercel URL hosts the production React frontend and supports direct navigation to every client route. The complete authenticated system additionally requires the Express backend, PostgreSQL, n8n, and Gemini environment configuration described below. Those stateful services are intentionally not represented as hosted on Vercel.
+
 ## Component boundaries
 
 | Directory | Responsibility |
