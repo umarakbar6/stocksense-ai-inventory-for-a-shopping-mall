@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  MANAGER
+  STAFF
+}
+
+enum MovementType {
+  STOCK_IN
+  SALE
+  DAMAGED
+  ADJUSTMENT_IN
+  ADJUSTMENT_OUT
+}
+
+enum MovementSource {
+  FORM
+  AI
+}
+
+enum ProposalStatus {
+  PENDING
+  CANCELLED
+  EXECUTED
+  EXPIRED
+  REJECTED
+}
+
+model User {
+  id           String          @id @default(uuid()) @db.Uuid
+  name         String          @db.VarChar(120)
+  email        String          @unique @db.VarChar(254)
+  passwordHash String          @map("password_hash") @db.Text
+  role         Role
+  isActive     Boolean         @default(true) @map("is_active")
+  createdAt    DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  movements    StockMovement[]
+  proposals    AiProposal[]
+  auditEvents  AuditEvent[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String    @id @default(uuid()) @db.Uuid
+  name        String    @unique @db.VarChar(80)
+  description String?   @db.VarChar(500)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                String          @id @default(uuid()) @db.Uuid
+  sku               String          @unique @db.VarChar(64)
+  name              String          @db.VarChar(160)
+  description       String?         @db.VarChar(1000)
+  categoryId        String          @map("category_id") @db.Uuid
+  quantity          Int             @default(0)
+  lowStockThreshold Int             @default(5) @map("low_stock_threshold")
+  sellingPriceMinor Int             @map("selling_price_minor")
+  costPriceMinor    Int             @map("cost_price_minor")
+  isActive          Boolean         @default(true) @map("is_active")
+  version           Int             @default(1)
+  createdAt         DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt         DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  category          Category        @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  movements         StockMovement[]
+  proposals         AiProposal[]
+
+  @@index([categoryId, isActive])
+  @@index([name])
+  @@map("products")
+}
+
+model Supplier {
+  id        String          @id @default(uuid()) @db.Uuid
+  name      String          @unique @db.VarChar(160)
+  phone     String?         @db.VarChar(40)
+  email     String?         @db.VarChar(254)
+  isActive  Boolean         @default(true) @map("is_active")
+  createdAt DateTime        @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt DateTime        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  movements StockMovement[]
+  proposals AiProposal[]
+
+  @@map("suppliers")
+}
+
+model StockMovement {
+  id             String         @id @default(uuid()) @db.Uuid
+  productId      String         @map("product_id") @db.Uuid
+  actorUserId    String         @map("actor_user_id") @db.Uuid
+  supplierId     String?        @map("supplier_id") @db.Uuid
+  proposalId     String?        @unique @map("proposal_id") @db.Uuid
+  type           MovementType
+  source         MovementSource
+  quantity       Int
+  delta          Int
+  beforeQuantity Int            @map("before_quantity")
+  afterQuantity  Int            @map("after_quantity")
+  reason         String?        @db.VarChar(500)
+  occurredAt     DateTime       @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  product        Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+  actor          User           @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+  supplier       Supplier?      @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  proposal       AiProposal?    @relation("ExecutedProposal", fields: [proposalId], references: [id], onDelete: Restrict)
+
+  @@index([productId, occurredAt(sort: Desc)])
+  @@index([type, occurredAt(sort: Desc)])
+  @@index([actorUserId, occurredAt(sort: Desc)])
+  @@map("stock_movements")
+}
+
+model AiProposal {
+  id                 String         @id @default(uuid()) @db.Uuid
+  actorUserId        String         @map("actor_user_id") @db.Uuid
+  productId          String         @map("product_id") @db.Uuid
+  supplierId         String?        @map("supplier_id") @db.Uuid
+  movementType       MovementType   @map("movement_type")
+  quantity           Int
+  reason             String?        @db.VarChar(500)
+  beforeQuantity     Int            @map("before_quantity")
+  projectedQuantity  Int            @map("projected_quantity")
+  status             ProposalStatus @default(PENDING)
+  idempotencyKey     String         @unique @map("idempotency_key") @db.VarChar(160)
+  expiresAt          DateTime       @map("expires_at") @db.Timestamptz(3)
+  executedMovementId String?        @unique @map("executed_movement_id") @db.Uuid
+  createdAt          DateTime       @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt          DateTime       @updatedAt @map("updated_at") @db.Timestamptz(3)
+  actor              User           @relation(fields: [actorUserId], references: [id], onDelete: Restrict)
+  product            Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
+  supplier           Supplier?      @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  executedMovement   StockMovement? @relation("ExecutedProposal")
+
+  @@index([actorUserId, status])
+  @@index([status, expiresAt])
+  @@map("ai_proposals")
+}
+
+model AuditEvent {
+  id          String   @id @default(uuid()) @db.Uuid
+  actorUserId String?  @map("actor_user_id") @db.Uuid
+  action      String   @db.VarChar(100)
+  entityType  String   @map("entity_type") @db.VarChar(80)
+  entityId    String   @map("entity_id") @db.Uuid
+  requestId   String   @map("request_id") @db.VarChar(128)
+  metadata    Json
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  actor       User?    @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([entityType, entityId])
+  @@index([actorUserId, createdAt(sort: Desc)])
+  @@index([requestId])
+  @@map("audit_events")
+}

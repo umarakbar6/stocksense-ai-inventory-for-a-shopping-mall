@@ -1,0 +1,30 @@
+{
+  "id": "stocksense-wf02-grounded-read",
+  "name": "StockSense WF-02 Grounded Read Answer",
+  "active": false,
+  "versionId": "afc88338-02aa-4305-a972-42ee909a0202",
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "trigger",
+      "name": "Called by another workflow",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-260, 0],
+      "parameters": { "inputSource": "passthrough" }
+    },
+    {
+      "id": "ground",
+      "name": "Enforce grounded response contract",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "parameters": {
+        "jsCode": "const x=$json; if(!x.requestId||!x.conversationId||!x.intent||!x.tool||!x.toolResultId||typeof x.message!=='string') throw new Error('Invalid grounded-answer input'); if(/(?:^|\\D)\\d+(?:\\.\\d+)?/.test(x.message) && !JSON.stringify(x.toolResult??{}).match(/\\d/)) throw new Error('Numeric answer lacks numeric tool evidence'); return [{json:{version:'1.0',requestId:x.requestId,conversationId:x.conversationId,kind:'answer',message:x.message,citationsToToolResults:[x.toolResultId],meta:{intent:x.intent,tool:x.tool}}}];"
+      }
+    }
+  ],
+  "connections": { "Called by another workflow": { "main": [[{ "node": "Enforce grounded response contract", "type": "main", "index": 0 }]] } },
+  "pinData": {},
+  "tags": []
+}

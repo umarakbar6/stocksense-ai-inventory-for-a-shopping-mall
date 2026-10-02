@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stocksense.local/schemas/chat-response.schema.json",
+  "title": "StockSense n8n chat response v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "requestId", "conversationId", "kind", "message", "citationsToToolResults", "meta"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "conversationId": { "type": "string", "format": "uuid" },
+    "kind": { "enum": ["answer", "refusal", "unavailable"] },
+    "message": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "citationsToToolResults": { "type": "array", "maxItems": 10, "items": { "type": "string", "minLength": 1 } },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["intent", "tool"],
+      "properties": { "intent": { "type": "string" }, "tool": { "type": ["string", "null"] } }
+    }
+  }
+}

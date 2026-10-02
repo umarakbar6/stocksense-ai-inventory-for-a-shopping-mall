@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-10-02T17:26:32.611Z",
+  "width": 360,
+  "height": 800,
+  "routes": [
+    {
+      "name": "dashboard",
+      "path": "/",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "products",
+      "path": "/products",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "record-stock",
+      "path": "/inventory/new",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "history",
+      "path": "/history",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "reports",
+      "path": "/reports",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "assistant",
+      "path": "/assistant",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    }
+  ]
+}

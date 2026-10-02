@@ -1,0 +1,65 @@
+{
+  "id": "stocksense-wf03-prepare-movement",
+  "name": "StockSense WF-03 Prepare Movement Proposal",
+  "active": false,
+  "versionId": "a3ba7d43-90d9-470a-bdf3-42ee909a0103",
+  "settings": { "executionOrder": "v1", "errorWorkflow": "stocksense-wf04-error-handler" },
+  "nodes": [
+    {
+      "id": "trigger",
+      "name": "Proposal sub-workflow input",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [-500, 0],
+      "parameters": { "inputSource": "passthrough" }
+    },
+    {
+      "id": "validate",
+      "name": "Validate normalized movement",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-260, 0],
+      "parameters": {
+        "jsCode": "const value=$json; const types=['STOCK_IN','SALE','DAMAGED','ADJUSTMENT_IN','ADJUSTMENT_OUT']; if(!value.contextRef||!value.requestId||typeof value.productQuery!=='string'||!value.productQuery.trim()||!types.includes(value.movementType)||!Number.isInteger(value.quantity)||value.quantity<1) throw new Error('Invalid normalized movement proposal input'); return [{json:{contextRef:value.contextRef,productQuery:value.productQuery.trim(),movementType:value.movementType,quantity:value.quantity,supplierName:value.supplierName||null,reason:value.reason||null,idempotencyKey:value.requestId}}];"
+      }
+    },
+    {
+      "id": "prepare",
+      "name": "Persist pending proposal through backend",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [0, 0],
+      "onError": "continueRegularOutput",
+      "parameters": {
+        "method": "POST",
+        "url": "={{ ($env.BACKEND_INTERNAL_URL || 'http://host.docker.internal:3000/internal/v1/agent-tools') + '/prepare-movement' }}",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [
+          { "name": "Authorization", "value": "=Bearer {{$env.AGENT_SERVICE_SECRET}}" },
+          { "name": "Content-Type", "value": "application/json" }
+        ] },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json }}",
+        "options": { "timeout": 10000 }
+      }
+    },
+    {
+      "id": "result",
+      "name": "Return proposal or typed rejection",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [260, 0],
+      "parameters": {
+        "jsCode": "if($json.error||!$json.data?.proposal)return [{json:{ok:false,code:$json.error?.code||'PROPOSAL_REJECTED',message:$json.error?.message||'The proposal could not be prepared safely.'}}]; return [{json:{ok:true,toolResultId:$json.data.toolResultId,proposal:$json.data.proposal}}];"
+      }
+    }
+  ],
+  "connections": {
+    "Proposal sub-workflow input": { "main": [[{ "node": "Validate normalized movement", "type": "main", "index": 0 }]] },
+    "Validate normalized movement": { "main": [[{ "node": "Persist pending proposal through backend", "type": "main", "index": 0 }]] },
+    "Persist pending proposal through backend": { "main": [[{ "node": "Return proposal or typed rejection", "type": "main", "index": 0 }]] }
+  },
+  "pinData": {},
+  "tags": []
+}

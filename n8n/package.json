@@ -1,0 +1,14 @@
+{
+  "name": "@stocksense/n8n-workflows",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-workflows.mjs",
+    "start": "powershell -ExecutionPolicy Bypass -File ./start-local.ps1",
+    "import": "powershell -ExecutionPolicy Bypass -File ./sync-workflows.ps1"
+  },
+  "dependencies": {
+    "n8n": "2.41.5"
+  }
+}

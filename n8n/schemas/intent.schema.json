@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stocksense.local/schemas/intent.schema.json",
+  "title": "StockSense classifier output",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["intent", "productQuery", "from", "to", "limit"],
+  "properties": {
+    "intent": { "enum": ["STOCK_QUERY", "LOW_STOCK_QUERY", "TOP_SELLING_QUERY", "FINANCIAL_QUERY", "MOVEMENT_REQUEST", "UNSUPPORTED"] },
+    "productQuery": { "type": ["string", "null"] },
+    "from": { "type": ["string", "null"] },
+    "to": { "type": ["string", "null"] },
+    "limit": { "type": "integer", "minimum": 1, "maximum": 10 }
+  }
+}

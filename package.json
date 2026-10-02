@@ -1,0 +1,39 @@
+{
+  "name": "stocksense",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Role-aware shopping mall inventory with an n8n-orchestrated AI assistant",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "typecheck": "npm run typecheck --workspace backend && npm run typecheck --workspace frontend",
+    "test": "npm run test --workspace backend && npm run test --workspace frontend",
+    "db:generate": "prisma generate --schema database/schema.prisma",
+    "db:validate": "prisma validate --schema database/schema.prisma",
+    "db:typecheck": "tsc -p database/tsconfig.json --noEmit",
+    "db:migrate": "prisma migrate dev --schema database/schema.prisma",
+    "db:seed": "tsx database/seed.ts"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "prisma": "6.12.0",
+    "tsx": "^4.20.6"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "prisma@6.19.3": true,
+    "@prisma/engines@6.19.3": true,
+    "@prisma/client@6.19.3": true,
+    "argon2@0.44.0": true
+  },
+  "dependencies": {
+    "@prisma/client": "^6.12.0"
+  }
+}

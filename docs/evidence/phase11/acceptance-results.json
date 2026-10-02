@@ -1,0 +1,298 @@
+{
+  "generatedAt": "2026-10-02T17:23:02.853Z",
+  "environment": {
+    "backend": "http://127.0.0.1:3000",
+    "database": "live PostgreSQL (connection redacted)",
+    "n8n": "live local workflow service (healthy)",
+    "mobileViewport": "360x800"
+  },
+  "strictExitRule": "A test passes only when every assertion passes.",
+  "counts": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "overallStatus": "PASS",
+  "tests": [
+    {
+      "id": "AT-01",
+      "title": "AI answers from real data",
+      "status": "PASS",
+      "assertions": [
+        {
+          "name": "Three stock values match the database",
+          "expected": "all equal",
+          "actual": [
+            {
+              "sku": "GROC-RICE-005",
+              "database": 32,
+              "tool": 32,
+              "passed": true
+            },
+            {
+              "sku": "CLTH-TSHIRT-001",
+              "database": 5,
+              "tool": 5,
+              "passed": true
+            },
+            {
+              "sku": "HOME-CLEAN-001",
+              "database": 24,
+              "tool": 24,
+              "passed": true
+            }
+          ],
+          "passed": true
+        },
+        {
+          "name": "Agent and dashboard top-selling results match",
+          "expected": {
+            "product": {
+              "id": "f7fa7941-2d9f-4f54-85a0-2e555c7d92da",
+              "sku": "ELEC-TYPEC-001",
+              "name": "Type-C Cable"
+            },
+            "unitsSold": 8
+          },
+          "actual": {
+            "product": {
+              "id": "f7fa7941-2d9f-4f54-85a0-2e555c7d92da",
+              "sku": "ELEC-TYPEC-001",
+              "name": "Type-C Cable"
+            },
+            "unitsSold": 8
+          },
+          "passed": true
+        },
+        {
+          "name": "Unknown product returns no result",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "name": "Assistant supplies a grounded answer",
+          "expected": "answer",
+          "actual": "answer",
+          "passed": true
+        },
+        {
+          "name": "Assistant response is available for invented-number review",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "AT-02",
+      "title": "AI change requires confirmation",
+      "status": "PASS",
+      "assertions": [
+        {
+          "name": "Cancelled proposal did not execute",
+          "expected": "CANCELLED with no movement",
+          "actual": {
+            "status": "CANCELLED",
+            "executedMovementId": null
+          },
+          "passed": true
+        },
+        {
+          "name": "Proposal preview is 15 to 55 for Ali Traders",
+          "expected": {
+            "before": 15,
+            "projected": 55,
+            "supplier": "Ali Traders"
+          },
+          "actual": {
+            "before": 15,
+            "projected": 55,
+            "supplier": "Ali Traders"
+          },
+          "passed": true
+        },
+        {
+          "name": "Confirmation executed exactly once",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "name": "AI history is complete",
+          "expected": {
+            "delta": 40,
+            "before": 15,
+            "after": 55,
+            "source": "AI",
+            "actor": "af833eff-8d9b-4ead-9fbf-63e19c7f37c7",
+            "proposalId": "5f0cd0d8-9f54-4637-8f79-f6c557558dec"
+          },
+          "actual": {
+            "delta": 40,
+            "before": 15,
+            "after": 55,
+            "source": "AI",
+            "actor": "af833eff-8d9b-4ead-9fbf-63e19c7f37c7",
+            "proposalId": "5f0cd0d8-9f54-4637-8f79-f6c557558dec"
+          },
+          "passed": true
+        },
+        {
+          "name": "Natural-language request produces a confirmation proposal",
+          "expected": "proposal",
+          "actual": "proposal",
+          "passed": true
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "AT-03",
+      "title": "Stock cannot go below zero",
+      "status": "PASS",
+      "assertions": [
+        {
+          "name": "Normal form rejects insufficient stock",
+          "expected": "409 INSUFFICIENT_STOCK",
+          "actual": "409 INSUFFICIENT_STOCK",
+          "passed": true
+        },
+        {
+          "name": "Agent mutation tool rejects insufficient stock",
+          "expected": "409 INSUFFICIENT_STOCK",
+          "actual": "409 INSUFFICIENT_STOCK",
+          "passed": true
+        },
+        {
+          "name": "Quantity remains unchanged",
+          "expected": 5,
+          "actual": 5,
+          "passed": true
+        },
+        {
+          "name": "No movement or proposal is stored",
+          "expected": {
+            "movements": 1,
+            "proposals": 0
+          },
+          "actual": {
+            "movements": 1,
+            "proposals": 0
+          },
+          "passed": true
+        },
+        {
+          "name": "AI chat clearly rejects the over-sale",
+          "expected": "refusal or rejected proposal",
+          "actual": "refusal",
+          "passed": true
+        }
+      ],
+      "notes": []
+    },
+    {
+      "id": "AT-04",
+      "title": "Staff cannot exceed their role",
+      "status": "PASS",
+      "assertions": [
+        {
+          "name": "Staff product response omits financial fields",
+          "expected": "no costPriceMinor or unitMarginMinor",
+          "actual": [
+            "id",
+            "sku",
+            "name",
+            "description",
+            "category",
+            "quantity",
+            "lowStockThreshold",
+            "sellingPriceMinor",
+            "isLowStock",
+            "isActive",
+            "version",
+            "createdAt",
+            "updatedAt"
+          ],
+          "passed": true
+        },
+        {
+          "name": "Staff financial tool request is forbidden",
+          "expected": "403 FORBIDDEN",
+          "actual": "403 FORBIDDEN",
+          "passed": true
+        },
+        {
+          "name": "Direct staff price update is forbidden",
+          "expected": "403 FORBIDDEN",
+          "actual": "403 FORBIDDEN",
+          "passed": true
+        },
+        {
+          "name": "Protected price remains unchanged",
+          "expected": true,
+          "actual": true,
+          "passed": true
+        },
+        {
+          "name": "Cost/profit chat is refused",
+          "expected": "refusal",
+          "actual": "refusal",
+          "passed": true
+        },
+        {
+          "name": "Prompt-injection chat is refused",
+          "expected": "refusal",
+          "actual": "refusal",
+          "passed": true
+        }
+      ],
+      "notes": [
+        "No credential, signed context, cost value, or profit value is written to this evidence file."
+      ]
+    },
+    {
+      "id": "AT-05",
+      "title": "App works when AI does not",
+      "status": "PASS",
+      "assertions": [
+        {
+          "name": "Chat shows controlled temporary unavailability",
+          "expected": "unavailable",
+          "actual": {
+            "status": 503,
+            "kind": "unavailable"
+          },
+          "passed": true
+        },
+        {
+          "name": "Normal stock-in succeeds during AI outage",
+          "expected": 201,
+          "actual": 201,
+          "passed": true
+        },
+        {
+          "name": "Refreshed product shows persisted stock",
+          "expected": 56,
+          "actual": 56,
+          "passed": true
+        },
+        {
+          "name": "Test stock is safely restored",
+          "expected": 55,
+          "actual": 55,
+          "passed": true
+        },
+        {
+          "name": "All authenticated routes remain mobile-usable",
+          "expected": "6 routes pass at 360x800",
+          "actual": "6 routes audited",
+          "passed": true,
+          "evidence": "docs/evidence/phase10/responsive-audit.json"
+        }
+      ],
+      "notes": []
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stocksense.local/schemas/chat-request.schema.json",
+  "title": "StockSense n8n chat request v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "requestId", "conversationId", "message", "userContextRef", "role", "locale", "timezone"],
+  "properties": {
+    "version": { "const": "1.0" },
+    "requestId": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "conversationId": { "type": "string", "format": "uuid" },
+    "message": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "userContextRef": { "type": "string", "minLength": 40 },
+    "role": { "enum": ["MANAGER", "STAFF"] },
+    "locale": { "const": "en-PK" },
+    "timezone": { "const": "Asia/Karachi" }
+  }
+}

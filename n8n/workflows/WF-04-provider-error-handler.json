@@ -1,0 +1,30 @@
+{
+  "id": "stocksense-wf04-error-handler",
+  "name": "StockSense WF-04 Provider Error Handler",
+  "active": false,
+  "versionId": "b3a261bd-b834-490c-b699-42ee909a0404",
+  "settings": { "executionOrder": "v1" },
+  "nodes": [
+    {
+      "id": "error",
+      "name": "Workflow error trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [-260, 0],
+      "parameters": {}
+    },
+    {
+      "id": "sanitize",
+      "name": "Sanitize failure metadata",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "parameters": {
+        "jsCode": "const execution=$json.execution??{}; const workflow=$json.workflow??{}; const raw=String(execution.error?.message??'Unknown workflow failure'); const category=/timeout|timed out/i.test(raw)?'timeout':/401|403|credential|api key/i.test(raw)?'configuration':/schema|json|parse/i.test(raw)?'schema':/openai|provider|429|5\\d\\d/i.test(raw)?'provider':'tool'; return [{json:{level:'error',event:'STOCKSENSE_AGENT_FAILURE',category,workflowId:workflow.id??null,workflowName:workflow.name??null,executionId:execution.id??null,occurredAt:new Date().toISOString()}}];"
+      }
+    }
+  ],
+  "connections": { "Workflow error trigger": { "main": [[{ "node": "Sanitize failure metadata", "type": "main", "index": 0 }]] } },
+  "pinData": {},
+  "tags": []
+}

@@ -1,0 +1,169 @@
+{
+  "generatedAt": "2026-10-02T07:18:07.216Z",
+  "width": 360,
+  "height": 800,
+  "routes": [
+    {
+      "name": "dashboard",
+      "path": "/",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "products",
+      "path": "/products",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [],
+      "smallControls": []
+    },
+    {
+      "name": "record-stock",
+      "path": "/inventory/new",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [
+        "<button class=\"icon-button mobile-only\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke"
+      ],
+      "smallControls": [
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        }
+      ]
+    },
+    {
+      "name": "history",
+      "path": "/history",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [
+        "<button class=\"icon-button mobile-only\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke"
+      ],
+      "smallControls": [
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        }
+      ]
+    },
+    {
+      "name": "reports",
+      "path": "/reports",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [
+        "<button class=\"icon-button mobile-only\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke"
+      ],
+      "smallControls": [
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        }
+      ]
+    },
+    {
+      "name": "assistant",
+      "path": "/assistant",
+      "viewport": {
+        "width": 360,
+        "height": 800
+      },
+      "documentWidth": 360,
+      "horizontalOverflow": false,
+      "unnamedControls": [
+        "<button class=\"icon-button mobile-only\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke"
+      ],
+      "smallControls": [
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "BUTTON",
+          "text": "",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Which products are running low?",
+          "width": 161,
+          "height": 30
+        },
+        {
+          "tag": "BUTTON",
+          "text": "How many Type-C cables are in stock?",
+          "width": 186,
+          "height": 30
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Add 40 Type-C cables from Ali Traders",
+          "width": 187,
+          "height": 30
+        },
+        {
+          "tag": "INPUT",
+          "text": "Message StockSense AI",
+          "width": 209,
+          "height": 19
+        },
+        {
+          "tag": "BUTTON",
+          "text": "Send message",
+          "width": 39,
+          "height": 39
+        }
+      ]
+    }
+  ]
+}
