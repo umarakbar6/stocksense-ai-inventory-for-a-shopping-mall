@@ -2,6 +2,7 @@
   "name": "stocksense",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "description": "Role-aware shopping mall inventory with an n8n-orchestrated AI assistant",
   "workspaces": [
     "frontend",
