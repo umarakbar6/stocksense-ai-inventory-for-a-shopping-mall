@@ -54,5 +54,25 @@ Live preflight on 2026-10-08: GET /api/v1/health returned HTTP 200 with
 text/html rather than backend JSON. POST /api/v1/auth/login returned HTTP 405
 for both documented demo accounts. Supabase's organization project list has
 AdmitCrew, FYP Compass, and My 1st Project; no StockSense database exists. The
-five live acceptance cases are blocked by the missing deployed backend/database,
+five live acceptance cases were blocked by the missing deployed backend/database,
 not passed. Existing local acceptance evidence does not certify this deployment.
+
+## Completed live login repair — 2026-10-08
+
+Created the dedicated free Supabase StockSense AI project
+`mbsthncpfgzyfdxffhcd`, with Data API disabled. Stored its connection in Vercel
+as a Production Secret. Migration `202609300001_initial` and the seed succeeded
+in the Vercel build environment, without exporting production credentials.
+`database/deploy-demo.mjs` is restricted to this project and preserves existing
+accounts on later builds. The backend and React frontend now share the public
+Vercel origin. Root ESM and strict TypeScript settings support the API adapter.
+
+All 22 live core checks passed: both logins/sessions, anonymous denial, inventory,
+reports, insufficient-stock rejection and unchanged quantities, Staff cost
+filtering/financial denial/price-write denial, Manager finance, persistent stock
+movement, restored test quantity, wrong-password rejection, cross-site write
+rejection, and logout. Evidence: `docs/evidence/live/acceptance-results.json`.
+
+Formal live acceptance: AT-01 and AT-02 BLOCKED; AT-03 and AT-04 PARTIAL;
+AT-05 PASS. The remaining dependency is hosted n8n; the current backend uses the
+unreachable local webhook default and chat fails safely with HTTP 503.

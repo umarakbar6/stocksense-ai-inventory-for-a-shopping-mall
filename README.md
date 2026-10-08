@@ -11,7 +11,7 @@ All 13 approved phases (0–12) are complete. The five formal acceptance scenari
 - **Vercel frontend:** [stocksense-ai-inventory-for-a-shopp.vercel.app](https://stocksense-ai-inventory-for-a-shopp.vercel.app)
 - **GitHub repository:** [umarakbar6/stocksense-ai-inventory-for-a-shopping-mall](https://github.com/umarakbar6/stocksense-ai-inventory-for-a-shopping-mall)
 
-The Vercel URL hosts the production React frontend and supports direct navigation to every client route. The complete authenticated system additionally requires the Express backend, PostgreSQL, n8n, and Gemini environment configuration described below. Those stateful services are intentionally not represented as hosted on Vercel.
+The Vercel URL hosts the React frontend and Express API on the same origin, backed by the StockSense AI PostgreSQL project in Supabase. Manager and Staff logins, inventory, reports, and permissions were verified live on 2026-10-08. The hosted n8n workflow is still pending, so live AI chat currently returns a controlled unavailable response. The earlier five-case acceptance pass describes the local full-stack run, not the public deployment. Current live evidence is in `docs/evidence/live/acceptance-results.json`.
 
 ## Component boundaries
 

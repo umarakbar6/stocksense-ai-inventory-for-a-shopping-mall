@@ -1,0 +1,157 @@
+{
+  "testedAt": "2026-10-08T14:17:06.433Z",
+  "base": "https://stocksense-ai-inventory-for-a-shopp.vercel.app",
+  "checks": [
+    {
+      "name": "Backend health JSON",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "manager@stocksense.local login",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "manager@stocksense.local session",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "staff@stocksense.local login",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "staff@stocksense.local session",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "Anonymous inventory blocked",
+      "passed": true,
+      "actual": 401
+    },
+    {
+      "name": "Seeded inventory visible",
+      "passed": true,
+      "actual": 4
+    },
+    {
+      "name": "Live stock reports",
+      "passed": true,
+      "actual": {
+        "top": 200,
+        "low": 200
+      }
+    },
+    {
+      "name": "Insufficient stock rejected",
+      "passed": true,
+      "actual": 409
+    },
+    {
+      "name": "Rejected movement preserves quantity",
+      "passed": true,
+      "actual": 5
+    },
+    {
+      "name": "Staff cannot see costs",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "Staff finance denied",
+      "passed": true,
+      "actual": 403
+    },
+    {
+      "name": "Manager finance allowed",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "Staff direct price update denied",
+      "passed": true,
+      "actual": 403
+    },
+    {
+      "name": "Normal movement works during agent outage",
+      "passed": true,
+      "actual": 201
+    },
+    {
+      "name": "manager@stocksense.local login",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "manager@stocksense.local session",
+      "passed": true,
+      "actual": 200
+    },
+    {
+      "name": "Movement persists across new login",
+      "passed": true,
+      "actual": 16
+    },
+    {
+      "name": "Test quantity restored",
+      "passed": true,
+      "actual": 201
+    },
+    {
+      "name": "Wrong password rejected",
+      "passed": true,
+      "actual": 401
+    },
+    {
+      "name": "Cross-site write rejected",
+      "passed": true,
+      "actual": 403
+    },
+    {
+      "name": "Logout clears browser cookie",
+      "passed": true,
+      "actual": 204
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AT-01",
+      "title": "AI inventory queries",
+      "status": "BLOCKED",
+      "httpStatus": 503
+    },
+    {
+      "id": "AT-02",
+      "title": "AI proposal confirmation and cancellation",
+      "status": "BLOCKED",
+      "httpStatus": 503
+    },
+    {
+      "id": "AT-03",
+      "title": "Insufficient stock through form and AI",
+      "status": "PARTIAL",
+      "formStatus": 409,
+      "aiStatus": 503
+    },
+    {
+      "id": "AT-04",
+      "title": "Staff permission and prompt-injection protection",
+      "status": "PARTIAL",
+      "financeStatus": 403,
+      "priceUpdateStatus": 403,
+      "aiStatus": 503
+    },
+    {
+      "id": "AT-05",
+      "title": "Agent outage and persistent normal inventory",
+      "status": "PASS"
+    }
+  ],
+  "agent": {
+    "available": false,
+    "explanation": "Hosted n8n webhook is not configured; live chat returns AGENT_UNAVAILABLE."
+  }
+}
