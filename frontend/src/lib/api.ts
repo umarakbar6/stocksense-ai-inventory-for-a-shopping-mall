@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? `${window.location.protocol}//${window.location.hostname}:3000/api/v1`;
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV
+  ? `${window.location.protocol}//${window.location.hostname}:3000/api/v1`
+  : "/api/v1");
 export class ApiError extends Error { constructor(public status: number, public code: string, message: string, public details?: unknown) { super(message); this.name = "ApiError"; } }
 export async function api<T>(path: string, options: RequestInit = {}): Promise<T> {
   const response = await fetch(`${API_BASE}${path}`, { ...options, credentials: "include", headers: { "Content-Type": "application/json", ...options.headers } });

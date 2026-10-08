@@ -1,0 +1,2 @@
+# Prisma migration provider for the checked-in PostgreSQL schema.
+provider = "postgresql"
