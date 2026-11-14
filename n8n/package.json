@@ -9,7 +9,7 @@
     "import": "powershell -ExecutionPolicy Bypass -File ./sync-workflows.ps1"
   },
   "dependencies": {
-    "n8n": "2.47.7"
+    "n8n": "2.48.1"
   },
   "engines": {
     "node": ">=24.0.0"
