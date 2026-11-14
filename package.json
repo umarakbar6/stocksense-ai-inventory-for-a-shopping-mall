@@ -36,5 +36,8 @@
   },
   "dependencies": {
     "@prisma/client": "^6.12.0"
+  },
+  "overrides": {
+    "tinypool": "2.1.2"
   }
 }

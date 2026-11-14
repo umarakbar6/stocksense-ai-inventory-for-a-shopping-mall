@@ -16,3 +16,10 @@ n8n/data/
 playwright-report/
 test-results/
 
+# Local credentials and generated runtime files
+!.env.*.example
+*.pem
+*.key
+.venv/
+__pycache__/
+*.pyc

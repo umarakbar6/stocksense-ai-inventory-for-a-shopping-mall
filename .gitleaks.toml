@@ -1,0 +1,24 @@
+title = "Repository secret guard"
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Exact reviewed synthetic fixture or idempotency identifier; no provider credential"
+condition = "AND"
+paths = ['''(?:^|/)backend/scripts/verify\-phase8\.mjs$''']
+regexTarget = "secret"
+regexes = ['''^phase8\-at02\-cancel\-v1$''']
+
+[[allowlists]]
+description = "Exact reviewed synthetic fixture or idempotency identifier; no provider credential"
+condition = "AND"
+paths = ['''(?:^|/)backend/scripts/verify\-acceptance\.mjs$''']
+regexTarget = "secret"
+regexes = ['''^phase8\-at02\-cancel\-v1$''']
+
+[[allowlists]]
+description = "Exact reviewed synthetic fixture or idempotency identifier; no provider credential"
+condition = "AND"
+paths = ['''(?:^|/)backend/scripts/verify\-phase9\.mjs$''']
+regexTarget = "secret"
+regexes = ['''^phase9\-insufficient\-v1$''']
