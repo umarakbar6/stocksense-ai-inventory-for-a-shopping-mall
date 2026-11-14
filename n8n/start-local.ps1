@@ -14,6 +14,10 @@ if ([string]::IsNullOrWhiteSpace($env:N8N_ENCRYPTION_KEY)) { throw "N8N_ENCRYPTI
 $env:GEMINI_MODEL = if ($env:GEMINI_MODEL) { $env:GEMINI_MODEL } else { "gemini-flash-lite-latest" }
 $env:BACKEND_INTERNAL_URL = "http://127.0.0.1:3000/internal/v1/agent-tools"
 $env:N8N_BLOCK_ENV_ACCESS_IN_NODE = "false"
+$env:N8N_COMMUNITY_PACKAGES_ENABLED = "false"
+$env:N8N_PUBLIC_API_DISABLED = "true"
+$env:N8N_PUBLIC_API_SWAGGERUI_DISABLED = "true"
+$env:NODES_EXCLUDE = '["n8n-nodes-base.executeCommand","n8n-nodes-base.localFileTrigger","n8n-nodes-base.readWriteFile"]'
 $env:N8N_DIAGNOSTICS_ENABLED = "false"
 $env:N8N_VERSION_NOTIFICATIONS_ENABLED = "false"
 $env:N8N_TEMPLATES_ENABLED = "false"
@@ -26,6 +30,8 @@ if ([string]::IsNullOrWhiteSpace($env:N8N_USER_FOLDER)) {
   $env:N8N_USER_FOLDER = Join-Path $PSScriptRoot "data"
 }
 
-$globalN8n = Get-Command n8n -ErrorAction SilentlyContinue
-if ($globalN8n) { & $globalN8n.Source start }
-else { & node (Join-Path $PSScriptRoot "node_modules\n8n\bin\n8n") start }
+$localN8n = Join-Path $PSScriptRoot "node_modules\n8n\bin\n8n"
+if (-not (Test-Path -LiteralPath $localN8n)) {
+  throw "Install the pinned local n8n runtime with npm install --prefix n8n before startup."
+}
+& node $localN8n start
