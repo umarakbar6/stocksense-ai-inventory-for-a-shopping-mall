@@ -47,7 +47,7 @@ The repository contains importable, non-empty workflow exports for:
 
 Local startup disables diagnostics, templates, personalization, and version-notification network calls. Workflow code retains environment access only because it needs the scoped Gemini and backend service credentials.
 
-The runtime uses n8n `2.41.5`. The active workflow identifiers are `stocksense-wf01-chat-router`, `stocksense-wf02-grounded-read`, `stocksense-wf03-prepare-movement`, and `stocksense-wf04-error-handler`. The production webhook URL is configured through `N8N_WEBHOOK_URL`; do not hard-code or expose the service secret in an export.
+The runtime uses n8n `2.47.7`. The active workflow identifiers are `stocksense-wf01-chat-router`, `stocksense-wf02-grounded-read`, `stocksense-wf03-prepare-movement`, and `stocksense-wf04-error-handler`. The production webhook URL is configured through `N8N_WEBHOOK_URL`; do not hard-code or expose the service secret in an export.
 
 When the repository is inside a cloud-synchronized directory, select a local runtime profile before both synchronization and startup to avoid SQLite locking:
 
@@ -67,3 +67,13 @@ Gemini Flash-Lite performs strict-schema intent classification only through Goog
 
 The backend talks to n8n through a versioned agent-gateway contract. A future agent implementation can replace n8n without changing database or core inventory services.
 
+
+## Runtime security and upstream findings
+
+The local runtime is pinned to stable n8n 2.47.7. Configure n8n's built-in owner account before activating workflows; environment variables named `N8N_BASIC_AUTH_*` are not an authentication setup for this runtime. Keep the editor on loopback. Public production webhooks require a deliberately configured HTTPS reverse proxy and private webhook authentication; do not expose the editor by changing its bind address.
+
+The shipped launch settings disable community package loading and the unused public management API, and exclude Execute Command, Local File Trigger, and Read/Write Files nodes. The supplied workflows use none of those nodes. Docker drops Linux capabilities and prevents privilege escalation. Code-node environment access remains enabled because the existing trusted workflows require their scoped provider/service credentials; use a dedicated instance and do not import untrusted workflows.
+
+A separate npm resolution/audit of the upstream n8n 2.47.7 runtime on 14 November 2026 reported 147 affected package entries: 7 critical, 69 high, 67 moderate and 4 low, spanning 126 unique advisory URLs. These counts include inherited package risk and do not establish exploitability of this deployment. The five application-root audits exclude this separate runtime. Latest/stable on npm was already 2.47.7; this audit did not identify a clean supported stable n8n upgrade. Restrictions reduce exposure but do not patch vulnerable bundled libraries. Review upstream releases and re-audit before public or sensitive production use. Docker image/OS-layer contents were not scanned.
+
+Sources: [official package versions](https://www.npmjs.com/package/n8n?activeTab=versions), [node restrictions](https://docs.n8n.io/hosting/configuration/environment-variables/nodes/), [disable the public API](https://docs.n8n.io/hosting/securing/disable-public-api/). On a configured running instance, run `n8n audit` to review instance-level credentials, unsafe nodes and webhook settings; that command was not run against a live deployment here.
